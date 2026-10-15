@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Power Calculator</title>
+<meta name="description" content="Free sample size and statistical power calculator for RCTs and surveys: two-sample means, two proportions, cluster-randomised trials with ICC and design effect, attrition inflation, minimum detectable effect (MDE) and survey sample size with finite population correction. Formulas documented, results shareable by link.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1F2A44;--teal:#2A9D8F;--sand:#F4EFE6;
+  --bg:#F4EFE6;--surface:#FFFDF9;--surface-2:#EDE6D8;--text:#1F2A44;--muted:#5C667A;--border:#D9D0BF;
+  --accent:#2A9D8F;--accent-ink:#FFFFFF;--accent-soft:#DDF0ED;
+  --result-bg:#1F2A44;--result-ink:#F4EFE6;--result-accent:#8FD9CD;--result-card:rgba(255,255,255,.07);--result-border:rgba(255,255,255,.1);
+  --warn:#B4551B;--radius:14px;
+  --shadow:0 1px 2px rgba(31,42,68,.05),0 10px 28px -16px rgba(31,42,68,.22);
+  --font-body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-display:'Fraunces',Georgia,'Times New Roman',serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121829;--surface:#1A2235;--surface-2:#222D44;--text:#EEE9DE;--muted:#A7B0C2;--border:#303C56;
+    --accent:#3DB8A8;--accent-ink:#0F1524;--accent-soft:#1B3A38;
+    --result-bg:#0E1322;--result-ink:#F4EFE6;--result-accent:#8FD9CD;--result-card:rgba(255,255,255,.05);--result-border:rgba(255,255,255,.08);
+    --warn:#E0884F;--shadow:0 1px 2px rgba(0,0,0,.3);color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121829;--surface:#1A2235;--surface-2:#222D44;--text:#EEE9DE;--muted:#A7B0C2;--border:#303C56;
+  --accent:#3DB8A8;--accent-ink:#0F1524;--accent-soft:#1B3A38;
+  --result-bg:#0E1322;--result-ink:#F4EFE6;--result-accent:#8FD9CD;--result-card:rgba(255,255,255,.05);--result-border:rgba(255,255,255,.08);
+  --warn:#E0884F;--shadow:0 1px 2px rgba(0,0,0,.3);color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+header.top{padding:26px 0 6px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.brand{display:flex;gap:12px;align-items:flex-start}
+.mark{width:42px;height:42px;border-radius:12px;background:var(--navy);display:grid;place-items:center;flex:none;margin-top:2px}
+h1{font-family:var(--font-display);font-weight:600;font-size:clamp(28px,5vw,40px);line-height:1.05;margin:0;letter-spacing:-.01em}
+.tag{margin:8px 0 0;color:var(--muted);max-width:62ch;font-size:15px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.shared{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin:18px 0 14px}
+.shared .wide{grid-column:1/-1}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+input,select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-variant-numeric:tabular-nums}
+input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.hint{display:block;color:var(--muted);font-size:12.5px;margin-top:5px;line-height:1.4}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;border:1px solid var(--border);background:var(--surface);color:var(--muted);border-radius:999px;padding:9px 14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--navy);color:var(--sand);border-color:var(--navy)}
+.panel{display:none}.panel.active{display:block}
+.grid{display:grid;gap:14px}
+@media (min-width:880px){
+  .grid{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}
+  .shared{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.shared .wide{grid-column:auto}
+}
+h2{font-family:var(--font-display);font-weight:600;font-size:24px;margin:0 0 4px;line-height:1.15}
+.lede{margin:0 0 14px;color:var(--muted);font-size:14.5px}
+.form>:where(.field,.row,.row3)+:where(.field,.row,.row3){margin-top:12px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.results{background:var(--result-bg);color:var(--result-ink);border-color:transparent}
+.rc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rc{background:var(--result-card);border-radius:12px;padding:12px 14px;border:1px solid var(--result-border);min-width:0}
+.rc.big{grid-column:1/-1}
+.rc-label{font-size:12px;text-transform:uppercase;letter-spacing:.07em;opacity:.8;font-weight:600}
+.rc-value{font-family:var(--font-display);font-size:30px;font-weight:600;line-height:1.1;margin-top:4px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.rc.big .rc-value{font-size:52px;color:var(--result-accent)}
+.rc-sub{font-size:13px;opacity:.82;margin-top:5px;line-height:1.4}
+.rc-sub b{font-weight:600;opacity:1}
+.invalid{padding:10px 2px;font-size:15px;line-height:1.5}
+.invalid strong{color:var(--result-accent)}
+.note{margin-top:14px}
+.note-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.note-head h3{margin:0;font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.note p{margin:10px 0 0;font-size:15.5px;line-height:1.6}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}a.btn{text-decoration:none;display:inline-block}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.ghost{background:transparent;white-space:nowrap;font-size:13px;padding:7px 10px}
+details.formulas{margin-top:14px}
+summary{cursor:pointer;font-weight:600;list-style:none;display:flex;align-items:center;gap:8px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:15px}
+details[open] summary::before{content:"−"}
+pre{font-family:var(--font-mono);font-size:13px;white-space:pre-wrap;line-height:1.6;background:var(--surface-2);padding:12px 14px;border-radius:10px;margin:12px 0 0;overflow-x:auto}
+.refs{font-size:13.5px;color:var(--muted);margin:10px 0 0;padding-left:18px}
+.refs li{margin:3px 0}
+.pro{margin-top:26px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-style:dashed}
+.pro h3{margin:0 0 4px;font-family:var(--font-display);font-size:20px;font-weight:600}
+.pro p{margin:0;color:var(--muted);font-size:14.5px;max-width:58ch}
+.faq{margin-top:26px}
+.faq h2{margin-bottom:10px}
+.faq details{border-top:1px solid var(--border);padding:12px 0}
+.faq details:last-child{border-bottom:1px solid var(--border)}
+.faq summary{font-size:15.5px}
+.faq p{margin:8px 0 0 28px;color:var(--muted);font-size:14.5px}
+footer{padding:28px 0 44px;color:var(--muted);font-size:13.5px;line-height:1.6}
+footer a{color:var(--accent)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);opacity:0;background:var(--navy);color:var(--sand);padding:10px 16px;border-radius:999px;transition:.2s;pointer-events:none;font-size:14px;z-index:9}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+[hidden]{display:none!important}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"Study Power Calculator","alternateName":"Study Power","applicationCategory":"EducationalApplication","applicationSubCategory":"Statistical calculator","operatingSystem":"Any (web browser)","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free sample size and statistical power calculator for randomised controlled trials and surveys: two-sample means, two proportions, cluster RCTs with ICC and design effect, attrition inflation, minimum detectable effect, and survey sample size with finite population correction.","featureList":["Two-sample means (Cohen's d or means and SD) with t-test correction","Two proportions (pooled and unpooled variance)","Cluster RCT design effect with ICC, cluster size and coefficient of variation","Attrition and non-response inflation","Minimum detectable effect solver","Survey sample size with finite population correction","Copyable methods note and shareable link"],"audience":{"@type":"Audience","audienceType":"Researchers, M&E staff, graduate students, A/B testers"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Why does the calculator give 64 per arm when the textbook formula gives 63?","acceptedAnswer":{"@type":"Answer","text":"The textbook formula n = 2((z_alpha + z_beta)/d)^2 uses the normal distribution and gives 62.8, rounded up to 63 for d = 0.5, alpha = 0.05 two-sided and 80% power. A two-sample t-test has slightly less power because the standard deviation is estimated, so we add Guenther's correction of z_alpha^2/4 (about one participant per arm), giving 63.75, rounded up to 64. This matches the exact noncentral-t solution used by Stata's power twomeans and R's pwr.t.test."}},
+{"@type":"Question","name":"How does the intracluster correlation (ICC) change the sample size?","acceptedAnswer":{"@type":"Answer","text":"When whole clusters (villages, schools, clinics) are randomised, individuals within a cluster are more alike than individuals from different clusters, so each additional person adds less information. The design effect DE = 1 + (m - 1) x ICC inflates the individual-level sample size. With ICC = 0.05 and 20 people per cluster, DE = 1.95, so 64 people per arm becomes 125 per arm, or 7 clusters of 20 per arm."}},
+{"@type":"Question","name":"Should attrition be applied before or after the design effect?","acceptedAnswer":{"@type":"Answer","text":"Compute the analysed sample size first (including the design effect), then divide by 1 minus the expected attrition to get the number to recruit. In a cluster trial this calculator keeps the number of clusters fixed and over-recruits within each cluster: with 20 analysed per cluster and 20% attrition, recruit 25 per cluster."}},
+{"@type":"Question","name":"What is the finite population correction in the survey calculator?","acceptedAnswer":{"@type":"Answer","text":"The basic survey formula n0 = z^2 p(1 - p)/e^2 assumes an effectively infinite population: for p = 0.5, a 5 point margin and 95% confidence it gives 384.2, so 385 respondents. If the population is small the correction n = n0/(1 + (n0 - 1)/N) reduces the sample; for N = 2,000 the requirement falls to 323. The correction matters only when the sample is more than about 5% of the population."}}
+]}]}
+</script>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="brand">
+    <div class="mark" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 18 Q8 4 12 12 T21 6" stroke="#8FD9CD" stroke-width="2.2" stroke-linecap="round" fill="none"/><circle cx="12" cy="12" r="2" fill="#F4EFE6"/></svg></div>
+    <div>
+      <h1>Study Power</h1>
+      <p class="tag">Sample size and power for RCTs and surveys: means, proportions, cluster designs with ICC, attrition and minimum detectable effects, in one page. Free, no sign-up, formulas shown.</p>
+    </div>
+  </div>
+  <button class="btn ghost" id="theme" type="button" title="Toggle colour theme">Theme: auto</button>
+</header>
+
+<section class="card shared" aria-label="Shared assumptions">
+  <div class="field"><label for="al">Significance level α</label><select id="al"><option value="0.05" selected>0.05</option><option value="0.01">0.01</option><option value="0.10">0.10</option></select></div>
+  <div class="field"><label for="sd">Test</label><select id="sd"><option value="2" selected>Two-sided</option><option value="1">One-sided</option></select></div>
+  <div class="field"><label for="pw">Power</label><select id="pw"><option value="0.8" selected>80%</option><option value="0.9">90%</option><option value="custom">Custom…</option></select></div>
+  <div class="field" id="pwc-wrap" hidden><label for="pwc">Custom power (%)</label><input id="pwc" type="number" min="1" max="99" step="1" value="85"></div>
+  <div class="field wide"><label for="at">Expected attrition / non-response (%)</label><input id="at" type="number" min="0" max="95" step="1" value="0" placeholder="0"><span class="hint">Inflates every result by 1 / (1 − a). Applies to all tabs.</span></div>
+</section>
+
+<div class="tabs" role="tablist" aria-label="Calculators">
+  <button class="tab" role="tab" id="tb-means" aria-controls="tab-means" aria-selected="true" data-tab="means">Two-sample means</button>
+  <button class="tab" role="tab" id="tb-props" aria-controls="tab-props" aria-selected="false" data-tab="props">Two proportions</button>
+  <button class="tab" role="tab" id="tb-cluster" aria-controls="tab-cluster" aria-selected="false" data-tab="cluster">Cluster RCT</button>
+  <button class="tab" role="tab" id="tb-mde" aria-controls="tab-mde" aria-selected="false" data-tab="mde">Minimum detectable effect</button>
+  <button class="tab" role="tab" id="tb-survey" aria-controls="tab-survey" aria-selected="false" data-tab="survey">Survey sample size</button>
+</div>
+
+<!-- MEANS -->
+<section class="panel active" id="tab-means" role="tabpanel" aria-labelledby="tb-means">
+  <div class="grid">
+    <form class="card form" onsubmit="return false">
+      <h2>Two-sample means</h2>
+      <p class="lede">Compare the mean of a continuous outcome between two arms (independent-samples t-test).</p>
+      <div class="field"><label for="dm">Specify the effect as</label><select id="dm"><option value="d" selected>Standardised effect size (Cohen's d)</option><option value="means">Two means and a common SD</option></select></div>
+      <div class="field" id="dm-d"><label for="d">Effect size d</label><input id="d" type="number" step="0.05" min="0" value="0.5"><span class="hint">Cohen's benchmarks: 0.2 small · 0.5 medium · 0.8 large. Field experiments often target 0.15–0.3.</span></div>
+      <div class="row3" id="dm-means" hidden>
+        <div class="field"><label for="m1">Mean, arm 1</label><input id="m1" type="number" step="any" value="50"></div>
+        <div class="field"><label for="m2">Mean, arm 2</label><input id="m2" type="number" step="any" value="55"></div>
+        <div class="field"><label for="sdv">Common SD</label><input id="sdv" type="number" step="any" min="0" value="10"></div>
+      </div>
+      <div class="field"><label for="r">Allocation ratio r = n₂ : n₁</label><input id="r" type="number" step="0.5" min="0.1" value="1"><span class="hint">1 = equal arms. r = 2 puts twice as many in arm 2.</span></div>
+    </form>
+    <div class="card results" id="means-res" aria-live="polite"></div>
+  </div>
+  <div class="card note">
+    <div class="note-head"><h3>Methods note</h3><div class="btns"><button class="btn" type="button" data-copy="means-note">Copy note</button><button class="btn primary" type="button" data-share>Copy shareable link</button></div></div>
+    <p id="means-note"></p>
+  </div>
+  <details class="card formulas"><summary>Formulas and references</summary>
+<pre>n₁ = ((z₁₋α/₂ + z₁₋β) / d)² × (1 + 1/r),   n₂ = r × n₁            normal approximation (Cohen 1988)
+n₁ ← n₁ + z₁₋α/₂² / 4                                            t-test correction (Guenther 1981): adds ≈1 per arm at α = 0.05
+                                                                 and reproduces the noncentral-t solution to within one unit
+d = |μ₁ − μ₂| / σ        r = n₂ / n₁        one-sided tests use z₁₋α in place of z₁₋α/₂
+recruit = ⌈ n / (1 − a) ⌉  for expected attrition a</pre>
+    <ol class="refs">
+      <li>Cohen J. (1988). <i>Statistical Power Analysis for the Behavioral Sciences</i>, 2nd ed. Erlbaum.</li>
+      <li>Guenther W.C. (1981). Sample size formulas for normal theory t tests. <i>The American Statistician</i> 35(4): 243–244.</li>
+    </ol>
+  </details>
+</section>
+
+<!-- PROPORTIONS -->
+<section class="panel" id="tab-props" role="tabpanel" aria-labelledby="tb-props">
+  <div class="grid">
+    <form class="card form" onsubmit="return false">
+      <h2>Two proportions</h2>
+      <p class="lede">Compare a binary outcome (adoption, pass rate, conversion) between two arms.</p>
+      <div class="row">
+        <div class="field"><label for="p1">Proportion, arm 1 (control)</label><input id="p1" type="number" step="0.01" min="0" max="1" value="0.50"><span class="hint">As a fraction, 0–1</span></div>
+        <div class="field"><label for="p2">Proportion, arm 2 (treatment)</label><input id="p2" type="number" step="0.01" min="0" max="1" value="0.60"></div>
+      </div>
+      <div class="field"><label for="rp">Allocation ratio r = n₂ : n₁</label><input id="rp" type="number" step="0.5" min="0.1" value="1"></div>
+    </form>
+    <div class="card results" id="props-res" aria-live="polite"></div>
+  </div>
+  <div class="card note">
+    <div class="note-head"><h3>Methods note</h3><div class="btns"><button class="btn" type="button" data-copy="props-note">Copy note</button><button class="btn primary" type="button" data-share>Copy shareable link</button></div></div>
+    <p id="props-note"></p>
+  </div>
+  <details class="card formulas"><summary>Formulas and references</summary>
+<pre>Pooled variance (shown as the main result; matches Stata `power twoproportions` and R `power.prop.test`):
+n₁ = [ z₁₋α/₂ √((1 + 1/r) p̄ q̄) + z₁₋β √(p₁q₁ + p₂q₂ / r) ]² / (p₁ − p₂)²,   p̄ = (p₁ + r p₂) / (1 + r),  q = 1 − p
+
+Unpooled variance (shown in the result card):
+n₁ = (z₁₋α/₂ + z₁₋β)² (p₁q₁ + p₂q₂ / r) / (p₁ − p₂)²
+
+No continuity correction is applied (Fleiss' correction adds roughly 1/|p₁ − p₂| per arm and is
+conservative). n₂ = r × n₁.  recruit = ⌈ n / (1 − a) ⌉.</pre>
+    <ol class="refs">
+      <li>Fleiss J.L., Levin B., Paik M.C. (2003). <i>Statistical Methods for Rates and Proportions</i>, 3rd ed. Wiley.</li>
+      <li>Cohen J. (1988). <i>Statistical Power Analysis for the Behavioral Sciences</i>, 2nd ed.</li>
+    </ol>
+  </details>
+</section>
+
+<!-- CLUSTER -->
+<section class="panel" id="tab-cluster" role="tabpanel" aria-labelledby="tb-cluster">
+  <div class="grid">
+    <form class="card form" onsubmit="return false">
+      <h2>Cluster RCT</h2>
+      <p class="lede">Randomise villages, schools or clinics instead of individuals; inflate for within-cluster correlation.</p>
+      <div class="field"><label for="cb">Outcome</label><select id="cb"><option value="means" selected>Continuous (two-sample means)</option><option value="props">Binary (two proportions)</option></select></div>
+      <div class="field" id="cb-means"><label for="cd">Effect size d</label><input id="cd" type="number" step="0.05" min="0" value="0.5"></div>
+      <div class="row" id="cb-props" hidden>
+        <div class="field"><label for="cp1">Proportion, control</label><input id="cp1" type="number" step="0.01" min="0" max="1" value="0.50"></div>
+        <div class="field"><label for="cp2">Proportion, treatment</label><input id="cp2" type="number" step="0.01" min="0" max="1" value="0.60"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="icc">ICC (ρ)</label><input id="icc" type="number" step="0.01" min="0" max="1" value="0.05"><span class="hint">Typical: 0.01–0.05 health, 0.05–0.2 education, village-level economic outcomes</span></div>
+        <div class="field"><label for="cv">CV of cluster sizes (optional)</label><input id="cv" type="number" step="0.1" min="0" value="" placeholder="0"><span class="hint">SD of cluster size ÷ mean size; leave blank for equal clusters</span></div>
+      </div>
+      <div class="field"><label for="cm">Solve for</label><select id="cm"><option value="k" selected>Number of clusters, given cluster size m</option><option value="m">Cluster size m, given a fixed number of clusters</option></select></div>
+      <div class="row">
+        <div class="field" id="cm-k"><label for="m">Participants analysed per cluster, m</label><input id="m" type="number" step="1" min="1" value="20"></div>
+        <div class="field" id="cm-m" hidden><label for="k">Clusters available per arm, k</label><input id="k" type="number" step="1" min="2" value="6"></div>
+        <div class="field"><label for="cr">Allocation ratio r = n₂ : n₁</label><input id="cr" type="number" step="0.5" min="0.1" value="1"></div>
+      </div>
+    </form>
+    <div class="card results" id="cluster-res" aria-live="polite"></div>
+  </div>
+  <div class="card note">
+    <div class="note-head"><h3>Methods note</h3><div class="btns"><button class="btn" type="button" data-copy="cluster-note">Copy note</button><button class="btn primary" type="button" data-share>Copy shareable link</button></div></div>
+    <p id="cluster-note"></p>
+  </div>
+  <details class="card formulas"><summary>Formulas and references</summary>
+<pre>DE = 1 + (m − 1) ρ                               equal cluster sizes (Donner &amp; Klar 2000)
+DE = 1 + ((1 + CV²) m − 1) ρ                     unequal cluster sizes; CV = SD(size)/mean(size)
+                                                 (Eldridge, Ashby &amp; Kerry 2006; Hayes &amp; Moulton 2017)
+n_cluster = ⌈ n_individual × DE ⌉                n_individual from the means or proportions formula above
+k = ⌈ n_cluster / m ⌉ clusters per arm;          analysed per arm = k × m
+
+Clusters fixed at k per arm (Hemming et al. 2011):
+m ≥ n (1 − ρ) / (k − n ρ (1 + CV²))             no cluster size suffices when k ≤ n ρ (1 + CV²)
+
+Attrition: recruit ⌈ m / (1 − a) ⌉ per cluster so m remain; the number of clusters is unchanged.
+With fewer than ~15 clusters per arm, add 1–2 clusters per arm or use a t-distribution with
+k₁ + k₂ − 2 degrees of freedom; the normal approximation is optimistic.</pre>
+    <ol class="refs">
+      <li>Donner A., Klar N. (2000). <i>Design and Analysis of Cluster Randomization Trials in Health Research</i>. Arnold.</li>
+      <li>Hayes R.J., Moulton L.H. (2017). <i>Cluster Randomised Trials</i>, 2nd ed. Chapman &amp; Hall/CRC.</li>
+      <li>Hemming K., Girling A.J., Sitch A.J., Marsh J., Lilford R.J. (2011). Sample size calculations for cluster randomised controlled trials with a fixed number of clusters. <i>BMC Medical Research Methodology</i> 11: 102.</li>
+      <li>Eldridge S.M., Ashby D., Kerry S. (2006). Sample size for cluster randomized trials: effect of coefficient of variation of cluster size and analysis method. <i>International Journal of Epidemiology</i> 35(5): 1292–1300.</li>
+    </ol>
+  </details>
+</section>
+
+<!-- MDE -->
+<section class="panel" id="tab-mde" role="tabpanel" aria-labelledby="tb-mde">
+  <div class="grid">
+    <form class="card form" onsubmit="return false">
+      <h2>Minimum detectable effect</h2>
+      <p class="lede">The budget fixes the sample. What is the smallest effect you can reliably detect?</p>
+      <div class="row">
+        <div class="field"><label for="mn">Participants recruited per arm (arm 1)</label><input id="mn" type="number" step="1" min="2" value="64"></div>
+        <div class="field"><label for="mr">Allocation ratio r = n₂ : n₁</label><input id="mr" type="number" step="0.5" min="0.1" value="1"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="micc">ICC (0 if individually randomised)</label><input id="micc" type="number" step="0.01" min="0" max="1" value="0"></div>
+        <div class="field"><label for="mm">Participants per cluster, m</label><input id="mm" type="number" step="1" min="1" value="20"></div>
+      </div>
+      <div class="field"><label for="mp">Control-group proportion (for a binary outcome)</label><input id="mp" type="number" step="0.01" min="0.01" max="0.99" value="0.50"><span class="hint">Used to express the MDE in percentage points</span></div>
+    </form>
+    <div class="card results" id="mde-res" aria-live="polite"></div>
+  </div>
+  <div class="card note">
+    <div class="note-head"><h3>Methods note</h3><div class="btns"><button class="btn" type="button" data-copy="mde-note">Copy note</button><button class="btn primary" type="button" data-share>Copy shareable link</button></div></div>
+    <p id="mde-note"></p>
+  </div>
+  <details class="card formulas"><summary>Formulas and references</summary>
+<pre>n_analysed = ⌊ n_recruited × (1 − a) ⌋            DE = 1 + (m − 1) ρ
+d_MDE = (z₁₋α/₂ + z₁₋β) × √( (1 + 1/r) / ( n_analysed / DE − z₁₋α/₂² / 4 ) )
+        (the means formula with Guenther's t-correction, solved for d)
+
+Binary outcome, control proportion p₁, unpooled variance:
+δ² = K [ p₁q₁ + (p₁ + δ)(1 − p₁ − δ) / r ],   K = (z₁₋α/₂ + z₁₋β)² DE / n_analysed
+which is quadratic in δ:  (1 + K/r) δ² − (K/r)(q₁ − p₁) δ − K p₁q₁ (1 + 1/r) = 0  →  positive root.
+For a decrease, replace (q₁ − p₁) by (p₁ − q₁). MDE in percentage points = 100 δ.</pre>
+    <ol class="refs">
+      <li>Bloom H.S. (1995). Minimum detectable effects: a simple way to report the statistical power of experimental designs. <i>Evaluation Review</i> 19(5): 547–556.</li>
+      <li>Hayes R.J., Moulton L.H. (2017). <i>Cluster Randomised Trials</i>, 2nd ed.</li>
+    </ol>
+  </details>
+</section>
+
+<!-- SURVEY -->
+<section class="panel" id="tab-survey" role="tabpanel" aria-labelledby="tb-survey">
+  <div class="grid">
+    <form class="card form" onsubmit="return false">
+      <h2>Survey sample size for a proportion</h2>
+      <p class="lede">How many respondents to estimate a prevalence or share within a margin of error.</p>
+      <div class="row">
+        <div class="field"><label for="N">Population size N (optional)</label><input id="N" type="number" step="1" min="1" value="" placeholder="∞"><span class="hint">Leave blank for a very large population</span></div>
+        <div class="field"><label for="e">Margin of error ± (percentage points)</label><input id="e" type="number" step="0.5" min="0.1" max="50" value="5"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="cl">Confidence level</label><select id="cl"><option value="0.90">90%</option><option value="0.95" selected>95%</option><option value="0.99">99%</option></select></div>
+        <div class="field"><label for="sp">Expected proportion p</label><input id="sp" type="number" step="0.01" min="0.01" max="0.99" value="0.50"><span class="hint">0.5 is the most conservative</span></div>
+      </div>
+      <p class="hint">The shared attrition field above is treated as expected non-response.</p>
+    </form>
+    <div class="card results" id="survey-res" aria-live="polite"></div>
+  </div>
+  <div class="card note">
+    <div class="note-head"><h3>Methods note</h3><div class="btns"><button class="btn" type="button" data-copy="survey-note">Copy note</button><button class="btn primary" type="button" data-share>Copy shareable link</button></div></div>
+    <p id="survey-note"></p>
+  </div>
+  <details class="card formulas"><summary>Formulas and references</summary>
+<pre>n₀ = z² p (1 − p) / e²                           infinite population (Cochran 1977), z = z₁₋(1−CL)/₂
+n  = n₀ / (1 + (n₀ − 1) / N)                     finite population correction (FPC)
+invite = ⌈ n / (1 − a) ⌉                          expected non-response a
+
+For a cluster or stratified survey, multiply n by the design effect of the sampling design (see Cluster RCT tab).</pre>
+    <ol class="refs">
+      <li>Cochran W.G. (1977). <i>Sampling Techniques</i>, 3rd ed. Wiley.</li>
+    </ol>
+  </details>
+</section>
+
+<section class="card pro" aria-label="Study Power Pro workbook">
+  <div>
+    <h3>Study Power Pro workbook</h3>
+    <p>All five calculators in Excel / Google Sheets with the formulas exposed, worked examples, and Stata (<code>power twomeans</code>, <code>power twoproportions</code>) and R (<code>pwr</code>, <code>clusterPower</code>) code that updates from your inputs. Useful for pre-analysis plans and grant appendices. $9, one-time.</p>
+  </div>
+  <a class="btn primary" href="https://tumbleworks.gumroad.com/l/study-power-pro" rel="noopener">Get the workbook — $9</a>
+</section>
+
+<section class="faq" aria-label="Frequently asked questions">
+  <h2>Questions people ask</h2>
+  <details><summary>Why does the calculator give 64 per arm when the textbook formula gives 63?</summary><p>The textbook formula n = 2((z<sub>α</sub> + z<sub>β</sub>)/d)² uses the normal distribution and gives 62.8, rounded up to 63, for d = 0.5, α = 0.05 two-sided and 80% power. A two-sample t-test has slightly less power because the SD is estimated, so we add Guenther's correction of z<sub>α</sub>²/4 (about one participant per arm): 63.75, rounded up to 64. This matches the exact noncentral-t solution used by Stata's <code>power twomeans</code> and R's <code>pwr.t.test</code>.</p></details>
+  <details><summary>How does the intracluster correlation (ICC) change the sample size?</summary><p>When whole clusters are randomised, people within a cluster are more alike than people from different clusters, so each additional person adds less information. The design effect DE = 1 + (m − 1)·ICC inflates the individual-level sample size. With ICC = 0.05 and 20 people per cluster, DE = 1.95, so 64 per arm becomes 125 per arm, or 7 clusters of 20 per arm.</p></details>
+  <details><summary>Should attrition be applied before or after the design effect?</summary><p>Compute the analysed sample size first (including the design effect), then divide by 1 − attrition to get the number to recruit. In a cluster trial this calculator keeps the number of clusters fixed and over-recruits within each cluster: with 20 analysed per cluster and 20% attrition, recruit 25 per cluster.</p></details>
+  <details><summary>What is the finite population correction in the survey calculator?</summary><p>The basic survey formula n₀ = z²p(1 − p)/e² assumes an effectively infinite population: for p = 0.5, a ±5 point margin and 95% confidence it gives 384.2, so 385 respondents. If the population is small, n = n₀/(1 + (n₀ − 1)/N) reduces the sample; for N = 2,000 the requirement falls to 323. The correction matters only when the sample exceeds about 5% of the population.</p></details>
+</section>
+
+<footer>
+  <p>Study Power is a planning aid. Formulas are the standard closed-form approximations documented on each tab; for designs with few clusters, unequal variances, repeated measures or covariate adjustment, confirm with simulation or a statistician. Your inputs stay in your browser; the shareable link simply encodes them in the URL.</p>
+  <p>Questions, bug reports and formula corrections are welcome.</p>
+</footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+
+/* ---------- inverse normal CDF (Acklam's algorithm, rel. error < 1.2e-9) ---------- */
+const A=[-3.969683028665376e+01,2.209460984245205e+02,-2.759285104469687e+02,1.383577518672690e+02,-3.066479806614716e+01,2.506628277459239e+00];
+const B=[-5.447609879822406e+01,1.615858368580409e+02,-1.556989798598866e+02,6.680131188771972e+01,-1.328068155288572e+01];
+const C=[-7.784894002430293e-03,-3.223964580411365e-01,-2.400758277161838e+00,-2.549732539343734e+00,4.374664141464968e+00,2.938163982698783e+00];
+const D=[7.784695709041462e-03,3.224671290700398e-01,2.445134137142996e+00,3.754408661907416e+00];
+function zq(p){
+  if(!(p>0&&p<1))return NaN;
+  const pl=0.02425,ph=1-pl;let q,r;
+  if(p<pl){q=Math.sqrt(-2*Math.log(p));return (((((C[0]*q+C[1])*q+C[2])*q+C[3])*q+C[4])*q+C[5])/((((D[0]*q+D[1])*q+D[2])*q+D[3])*q+1);}
+  if(p<=ph){q=p-0.5;r=q*q;return (((((A[0]*r+A[1])*r+A[2])*r+A[3])*r+A[4])*r+A[5])*q/(((((B[0]*r+B[1])*r+B[2])*r+B[3])*r+B[4])*r+1);}
+  q=Math.sqrt(-2*Math.log(1-p));return -(((((C[0]*q+C[1])*q+C[2])*q+C[3])*q+C[4])*q+C[5])/((((D[0]*q+D[1])*q+D[2])*q+D[3])*q+1);
+}
+
+/* ---------- helpers ---------- */
+const ceil=x=>Math.ceil(x-1e-9);
+const floor=x=>Math.floor(x+1e-9);
+const nf=new Intl.NumberFormat('en-US');
+const fmt=x=>isFinite(x)?nf.format(x):'—';
+const fx=(x,dp)=>isFinite(x)?x.toLocaleString('en-US',{minimumFractionDigits:dp,maximumFractionDigits:dp}):'—';
+const pc=(x,dp)=>fx(x*100,dp===undefined?((x*100)%1?1:0):dp)+'%';
+const num=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:NaN;};
+const inflate=(n,a)=>ceil(n/(1-a));
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function cards(list){
+  return '<div class="rc-grid">'+list.filter(Boolean).map(c=>`<div class="rc${c.big?' big':''}"><div class="rc-label">${c.label}</div><div class="rc-value" data-k="${c.k}">${c.value}</div>${c.sub?`<div class="rc-sub">${c.sub}</div>`:''}</div>`).join('')+'</div>';
+}
+function invalid(res,note,msg){$(res).innerHTML=`<div class="invalid"><strong>Check the inputs.</strong> ${msg}</div>`;$(note).textContent='—';}
+function shared(){
+  const alpha=parseFloat($('al').value),sides=parseInt($('sd').value,10);
+  const power=$('pw').value==='custom'?num('pwc')/100:parseFloat($('pw').value);
+  let at=num('at');at=isFinite(at)?Math.min(Math.max(at,0),95)/100:0;
+  return {alpha,sides,power,at,za:zq(1-alpha/sides),zb:zq(power),
+    sidesTxt:sides===1?'one-sided':'two-sided',powerTxt:pc(power),alphaTxt:String(alpha)};
+}
+const assume=S=>`Assuming α = ${S.alphaTxt} (${S.sidesTxt}) and ${S.powerTxt} power`;
+
+/* ---------- core formulas ---------- */
+function meansN(d,S,r){const base=Math.pow((S.za+S.zb)/d,2);const n1n=base*(1+1/r);const g=S.za*S.za/4;return {n1n,g,n1t:n1n+g};}
+function propsN(p1,p2,S,r){
+  const q1=1-p1,q2=1-p2,pbar=(p1+r*p2)/(1+r),qbar=1-pbar,diff=Math.abs(p1-p2);
+  const pooled=Math.pow(S.za*Math.sqrt((1+1/r)*pbar*qbar)+S.zb*Math.sqrt(p1*q1+p2*q2/r),2)/(diff*diff);
+  const unpooled=Math.pow(S.za+S.zb,2)*(p1*q1+p2*q2/r)/(diff*diff);
+  return {pooled,unpooled,diff};
+}
+const designEffect=(icc,m,cv)=>1+((1+cv*cv)*m-1)*icc;
+function solveM(n,icc,k,cv){const den=k-n*icc*(1+cv*cv);return den<=0?Infinity:n*(1-icc)/den;}
+
+/* ---------- renderers ---------- */
+function renderMeans(S){
+  const mode=$('dm').value;$('dm-d').hidden=mode!=='d';$('dm-means').hidden=mode==='d';
+  let d,eff;
+  if(mode==='d'){d=num('d');eff=`a standardised effect of d = ${fx(d,2)}`;}
+  else{const a=num('m1'),b=num('m2'),s=num('sdv');d=Math.abs(a-b)/s;eff=`a difference in means of ${fx(Math.abs(a-b),2)} (${fx(a,2)} vs ${fx(b,2)}, SD ${fx(s,2)}; d = ${fx(d,2)})`;}
+  const r=num('r');
+  if(!(d>0&&isFinite(d)&&r>0&&S.power>0&&S.power<1)){invalid('means-res','means-note','Enter a non-zero effect size, a positive allocation ratio and power between 1% and 99%.');return;}
+  const M=meansN(d,S,r);
+  const n1=ceil(M.n1t),n2=ceil(r*M.n1t),tot=n1+n2,rec1=inflate(n1,S.at),rec2=inflate(n2,S.at),rect=rec1+rec2;
+  $('means-res').innerHTML=cards([
+    {k:'n1',big:true,label:r===1?'Participants per arm (analysed)':'Participants in arm 1 (analysed)',value:fmt(n1),sub:`Two-sample t-test with small-sample correction. Normal approximation alone: <b data-k="n1n">${fmt(ceil(M.n1n))}</b> (${fx(M.n1n,2)} + ${fx(M.g,2)} correction = ${fx(M.n1t,2)}).`},
+    r!==1?{k:'n2',label:'Arm 2 (analysed)',value:fmt(n2),sub:`ratio ${fx(r,2)} : 1`}:null,
+    {k:'tot',label:'Total analysed',value:fmt(tot)},
+    {k:'rect',label:S.at>0?`Recruit, ${pc(S.at)} attrition`:'Recruit (no attrition)',value:fmt(rect),sub:`<b data-k="rec1">${fmt(rec1)}</b>${r!==1?` + ${fmt(rec2)}`:' per arm'}`},
+    {k:'d',label:"Cohen's d",value:fx(d,2),sub:`z<sub>α</sub> = ${fx(S.za,3)}, z<sub>β</sub> = ${fx(S.zb,3)}`}
+  ]);
+  $('means-note').textContent=`${assume(S)} with a ${fx(r,r%1?2:0)}:1 allocation, detecting ${eff} requires ${fmt(n1)} participants in ${r===1?'each arm':'arm 1 and '+fmt(n2)+' in arm 2'} (${fmt(tot)} in total), based on a two-sample t-test (normal approximation ${fmt(ceil(M.n1n))} per arm plus Guenther's small-sample correction of z²/4).`+(S.at>0?` Allowing for ${pc(S.at)} attrition, ${fmt(rec1)}${r!==1?' and '+fmt(rec2):' per arm'} (${fmt(rect)} in total) should be recruited.`:'');
+}
+
+function renderProps(S){
+  const p1=num('p1'),p2=num('p2'),r=num('rp');
+  if(!(p1>0&&p1<1&&p2>0&&p2<1&&p1!==p2&&r>0&&S.power>0&&S.power<1)){invalid('props-res','props-note','Proportions must lie strictly between 0 and 1 and differ from each other.');return;}
+  const P=propsN(p1,p2,S,r);
+  const n1=ceil(P.pooled),n2=ceil(r*P.pooled),tot=n1+n2,rec1=inflate(n1,S.at),rec2=inflate(n2,S.at),rect=rec1+rec2;
+  $('props-res').innerHTML=cards([
+    {k:'n',big:true,label:r===1?'Participants per arm (analysed)':'Participants in arm 1 (analysed)',value:fmt(n1),sub:`Pooled-variance z-test (${fx(P.pooled,2)} before rounding). Unpooled variance gives <b data-k="unpooled">${fmt(ceil(P.unpooled))}</b>.`},
+    r!==1?{k:'n2',label:'Arm 2 (analysed)',value:fmt(n2),sub:`ratio ${fx(r,2)} : 1`}:null,
+    {k:'tot',label:'Total analysed',value:fmt(tot)},
+    {k:'rect',label:S.at>0?`Recruit, ${pc(S.at)} attrition`:'Recruit (no attrition)',value:fmt(rect),sub:`<b data-k="rec1">${fmt(rec1)}</b>${r!==1?` + ${fmt(rec2)}`:' per arm'}`},
+    {k:'diff',label:'Difference',value:fx(P.diff*100,1)+' pp',sub:`${pc(p1,1)} → ${pc(p2,1)}; relative change ${fx((p2-p1)/p1*100,0)}%`}
+  ]);
+  $('props-note').textContent=`${assume(S)} with a ${fx(r,r%1?2:0)}:1 allocation, detecting a change in the outcome proportion from ${pc(p1,1)} to ${pc(p2,1)} (${fx(P.diff*100,1)} percentage points) requires ${fmt(n1)} participants in ${r===1?'each arm':'arm 1 and '+fmt(n2)+' in arm 2'} (${fmt(tot)} in total), using a two-proportion z-test with pooled variance and no continuity correction (unpooled variance: ${fmt(ceil(P.unpooled))}).`+(S.at>0?` Allowing for ${pc(S.at)} attrition, ${fmt(rec1)}${r!==1?' and '+fmt(rec2):' per arm'} (${fmt(rect)} in total) should be recruited.`:'');
+}
+
+function renderCluster(S){
+  const base=$('cb').value,mode=$('cm').value;
+  $('cb-means').hidden=base!=='means';$('cb-props').hidden=base==='means';$('cm-k').hidden=mode!=='k';$('cm-m').hidden=mode==='k';
+  const r=num('cr'),icc=num('icc');let cv=num('cv');cv=isFinite(cv)&&cv>0?cv:0;
+  let n1ind,n2ind,eff;
+  if(base==='means'){const d=num('cd');if(!(d>0)){invalid('cluster-res','cluster-note','Enter a non-zero effect size.');return;}const M=meansN(d,S,r);n1ind=ceil(M.n1t);n2ind=ceil(r*M.n1t);eff=`a standardised effect of d = ${fx(d,2)}`;}
+  else{const p1=num('cp1'),p2=num('cp2');if(!(p1>0&&p1<1&&p2>0&&p2<1&&p1!==p2)){invalid('cluster-res','cluster-note','Proportions must lie strictly between 0 and 1 and differ.');return;}const P=propsN(p1,p2,S,r);n1ind=ceil(P.pooled);n2ind=ceil(r*P.pooled);eff=`a change in the outcome proportion from ${pc(p1,1)} to ${pc(p2,1)}`;}
+  if(!(icc>=0&&icc<1&&r>0&&S.power>0&&S.power<1)){invalid('cluster-res','cluster-note','ICC must be between 0 and 1.');return;}
+  const iccTxt=`an intracluster correlation of ${fx(icc,icc*100%1?3:2)}`+(cv>0?` and a coefficient of variation of cluster sizes of ${fx(cv,2)}`:'');
+  const deTxt=cv>0?`1 + ((1 + CV²)m − 1)·ρ`:`1 + (m − 1)·ρ`;
+  if(mode==='k'){
+    const m=num('m');if(!(m>=1)){invalid('cluster-res','cluster-note','Cluster size m must be at least 1.');return;}
+    const de=designEffect(icc,m,cv),n1=ceil(n1ind*de),n2=ceil(n2ind*de),k1=ceil(n1/m),k2=ceil(n2/m),ktot=k1+k2;
+    const mrec=inflate(m,S.at),an1=k1*m,an2=k2*m,rec1=k1*mrec,rec2=k2*mrec;
+    $('cluster-res').innerHTML=cards([
+      {k:'k',big:true,label:r===1?'Clusters per arm':'Clusters in arm 1',value:fmt(k1),sub:`⌈ <b data-k="ninf">${fmt(n1)}</b> participants per arm ÷ ${fmt(m)} per cluster ⌉. Analysed per arm: ${fmt(an1)}.`},
+      {k:'de',label:'Design effect',value:fx(de,2),sub:deTxt},
+      {k:'nind',label:'Per arm if individually randomised',value:fmt(n1ind),sub:`× DE = ${fx(n1ind*de,1)} → ${fmt(n1)}`},
+      {k:'ktot',label:'Clusters in total',value:fmt(ktot),sub:r!==1?`${fmt(k1)} + ${fmt(k2)} (ratio ${fx(r,2)}:1)`:`${fmt(an1+an2)} participants analysed`},
+      {k:'mrec',label:S.at>0?`Recruit per cluster, ${pc(S.at)} attrition`:'Recruit per cluster',value:fmt(mrec),sub:`<b data-k="recarm">${fmt(rec1)}</b> per arm${r!==1?` / ${fmt(rec2)} in arm 2`:''}`}
+    ]);
+    $('cluster-note').textContent=`${assume(S)}, ${iccTxt} and ${fmt(m)} participants analysed per cluster (design effect ${fx(de,2)}), detecting ${eff} requires ${fmt(n1)} participants per arm after clustering (${fmt(n1ind)} under individual randomisation), i.e. ${fmt(k1)} clusters ${r===1?'per arm':'in arm 1 and '+fmt(k2)+' in arm 2'} (${fmt(ktot)} clusters and ${fmt(an1+an2)} participants analysed in total).`+(S.at>0?` Allowing for ${pc(S.at)} attrition, recruit ${fmt(mrec)} per cluster (${fmt(rec1)} ${r===1?'per arm':'in arm 1 and '+fmt(rec2)+' in arm 2'}).`:'');
+  }else{
+    const k=num('k');if(!(k>=1)){invalid('cluster-res','cluster-note','Enter the number of clusters available per arm.');return;}
+    const k2=ceil(r*k),m1=solveM(n1ind,icc,k,cv),m2=solveM(n2ind,icc,k2,cv),mreq=Math.max(m1,m2);
+    const kmin=Math.floor(n1ind*icc*(1+cv*cv))+1;
+    if(!isFinite(mreq)){
+      $('cluster-res').innerHTML=`<div class="invalid"><strong>Not feasible with ${fmt(k)} clusters per arm.</strong> With ${fmt(n1ind)} participants per arm needed under individual randomisation and ρ = ${fx(icc,3)}, no cluster size is large enough: k must exceed n·ρ${cv>0?'·(1 + CV²)':''} = ${fx(n1ind*icc*(1+cv*cv),1)}, so at least <b data-k="kmin">${fmt(kmin)}</b> clusters per arm are required (Hemming et al. 2011). Alternatively target a larger effect or accept lower power.</div>`;
+      $('cluster-note').textContent=`${assume(S)}, ${iccTxt}, ${fmt(k)} clusters per arm cannot detect ${eff} with any cluster size, because the number of clusters must exceed n·ρ = ${fx(n1ind*icc*(1+cv*cv),1)} (at least ${fmt(kmin)} clusters per arm; Hemming et al. 2011).`;
+      return;
+    }
+    const m=ceil(mreq),de=designEffect(icc,m,cv),mrec=inflate(m,S.at);
+    $('cluster-res').innerHTML=cards([
+      {k:'mreq',big:true,label:'Participants analysed per cluster needed',value:fmt(m),sub:`with ${fmt(k)} clusters per arm (${fx(mreq,1)} before rounding). m ≥ n(1 − ρ) / (k − nρ${cv>0?'(1 + CV²)':''}).`},
+      {k:'de',label:'Design effect at this m',value:fx(de,2),sub:deTxt},
+      {k:'nind',label:'Per arm if individually randomised',value:fmt(n1ind)},
+      {k:'an',label:'Analysed per arm',value:fmt(k*m),sub:`${fmt(k*m+k2*m)} in total across ${fmt(k+k2)} clusters`},
+      {k:'mrec',label:S.at>0?`Recruit per cluster, ${pc(S.at)} attrition`:'Recruit per cluster',value:fmt(mrec),sub:`<b data-k="recarm">${fmt(k*mrec)}</b> per arm`}
+    ]);
+    $('cluster-note').textContent=`${assume(S)}, ${iccTxt} and a fixed ${fmt(k)} clusters ${r===1?'per arm':'in arm 1 and '+fmt(k2)+' in arm 2'}, detecting ${eff} requires at least ${fmt(m)} participants analysed per cluster (design effect ${fx(de,2)}; ${fmt(n1ind)} per arm under individual randomisation, ${fmt(k*m)} per arm after clustering).`+(S.at>0?` Allowing for ${pc(S.at)} attrition, recruit ${fmt(mrec)} per cluster (${fmt(k*mrec)} per arm).`:'');
+  }
+}
+
+function renderMDE(S){
+  const n=num('mn'),r=num('mr'),p1=num('mp');let icc=num('micc'),m=num('mm');icc=isFinite(icc)&&icc>0?icc:0;m=isFinite(m)&&m>=1?m:1;
+  if(!(n>=2&&r>0&&S.power>0&&S.power<1)){invalid('mde-res','mde-note','Enter at least 2 participants per arm and a positive allocation ratio.');return;}
+  const nan=floor(n*(1-S.at)),de=icc>0?designEffect(icc,m,0):1,zs=S.za+S.zb;
+  const neff=nan/de-S.za*S.za/4;
+  if(!(neff>0)){invalid('mde-res','mde-note','The analysed sample is too small for this design (effective n ≤ 0 after the design effect).');return;}
+  const d=zs*Math.sqrt((1+1/r)/neff);
+  const K=zs*zs*de/nan,q1=1-p1;
+  const root=s=>{const a=1+K/r,b=-(K/r)*s,c=-K*p1*q1*(1+1/r);return (-b+Math.sqrt(b*b-4*a*c))/(2*a);};
+  const okp=p1>0&&p1<1;const up=okp?root(q1-p1):NaN,dn=okp?root(p1-q1):NaN;
+  const upOk=up<=q1+1e-9,dnOk=dn<=p1+1e-9;
+  $('mde-res').innerHTML=cards([
+    {k:'d',big:true,label:'Minimum detectable effect (Cohen’s d)',value:fx(d,2),sub:`${fx(d,3)} SD; with <b data-k="nan">${fmt(nan)}</b> analysed per arm${de>1?`, design effect ${fx(de,2)}`:''}.`},
+    okp?{k:'ppu',label:'Detectable increase',value:upOk?'+'+fx(up*100,1)+' pp':'—',sub:upOk?`${pc(p1,1)} → ${pc(p1+up,1)}`:'not detectable'}:null,
+    okp?{k:'ppd',label:'Detectable decrease',value:dnOk?'−'+fx(dn*100,1)+' pp':'—',sub:dnOk?`${pc(p1,1)} → ${pc(p1-dn,1)}`:'not detectable'}:null,
+    {k:'neff',label:'Effective n per arm',value:fx(neff,1),sub:`n / DE − z²/4 (t-correction)`},
+    {k:'nrec',label:'Recruited per arm',value:fmt(n),sub:S.at>0?`${pc(S.at)} attrition → ${fmt(nan)} analysed`:'no attrition assumed'}
+  ]);
+  $('mde-note').textContent=`With ${fmt(n)} participants recruited per arm (${fx(r,r%1?2:0)}:1 allocation)${S.at>0?`, ${pc(S.at)} attrition (${fmt(nan)} analysed per arm)`:''}${de>1?`, an intracluster correlation of ${fx(icc,3)} in clusters of ${fmt(m)} (design effect ${fx(de,2)})`:''}, α = ${S.alphaTxt} (${S.sidesTxt}) and ${S.powerTxt} power, the minimum detectable effect is d = ${fx(d,2)} standard deviations`+(okp&&upOk?`; for a binary outcome with a control-group rate of ${pc(p1,1)}, the study can detect an increase to ${pc(p1+up,1)} (+${fx(up*100,1)} points)${dnOk?` or a decrease to ${pc(p1-dn,1)} (−${fx(dn*100,1)} points)`:''}`:'')+'.';
+}
+
+function renderSurvey(S){
+  const N=num('N'),e=num('e')/100,cl=parseFloat($('cl').value),p=num('sp');
+  if(!(e>0&&e<1&&p>0&&p<1)){invalid('survey-res','survey-note','Enter a margin of error between 0 and 50 points and a proportion between 0 and 1.');return;}
+  const z=zq(1-(1-cl)/2),n0=z*z*p*(1-p)/(e*e),fpc=N>0,nr=fpc?n0/(1+(n0-1)/N):n0,n=ceil(nr),rec=inflate(n,S.at);
+  $('survey-res').innerHTML=cards([
+    {k:'n',big:true,label:'Respondents needed',value:fmt(n),sub:`<b data-k="nraw">${fx(nr,2)}</b> before rounding${fpc?` (finite population correction for N = ${fmt(N)}; ${fx(n0,2)} without it)`:' (population treated as very large)'}.`},
+    {k:'z',label:`z for ${pc(cl)} confidence`,value:fx(z,3)},
+    {k:'moe',label:'Margin of error',value:'±'+fx(e*100,1)+' pp',sub:`at p = ${fx(p,2)}`},
+    {k:'rec',label:S.at>0?`Invite, ${pc(S.at)} non-response`:'Invite (full response)',value:fmt(rec)},
+    fpc?{k:'frac',label:'Sampling fraction',value:pc(n/N,1),sub:n/N>0.05?'FPC matters here':'FPC has little effect'}:null
+  ]);
+  $('survey-note').textContent=`To estimate a proportion expected to be around ${pc(p,1)} with a margin of error of ±${fx(e*100,1)} percentage points at ${pc(cl)} confidence, a simple random sample of ${fmt(n)} respondents is required (${fx(nr,2)} before rounding${fpc?`, after a finite population correction for N = ${fmt(N)}`:'; the population is treated as very large'}).`+(S.at>0?` Allowing for ${pc(S.at)} non-response, ${fmt(rec)} people should be invited.`:'')+` Complex (cluster or stratified) designs should multiply this by the survey design effect.`;
+}
+
+/* ---------- state, URL and events ---------- */
+const IDS=['al','sd','pw','pwc','at','dm','d','m1','m2','sdv','r','p1','p2','rp','cb','cd','cp1','cp2','icc','cv','cm','m','k','cr','mn','mr','micc','mm','mp','N','e','cl','sp'];
+const TABS=['means','props','cluster','mde','survey'];
+let active='means';
+IDS.forEach(id=>{const el=$(id);if(el)el.dataset.def=el.value;});
+function query(){const q=new URLSearchParams();q.set('tab',active);IDS.forEach(id=>{const el=$(id);if(el&&el.value!==el.dataset.def&&el.value!=='')q.set(id,el.value);});return q.toString();}
+function renderAll(){
+  $('pwc-wrap').hidden=$('pw').value!=='custom';
+  const S=shared();
+  renderMeans(S);renderProps(S);renderCluster(S);renderMDE(S);renderSurvey(S);
+  try{history.replaceState(null,'',location.pathname+'?'+query());}catch(e){}
+}
+function setTab(t){if(TABS.indexOf(t)<0)t='means';active=t;document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===t)));TABS.forEach(x=>$('tab-'+x).classList.toggle('active',x===t));try{history.replaceState(null,'',location.pathname+'?'+query());}catch(e){}}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+document.addEventListener('input',e=>{if(e.target.matches('input,select'))renderAll();});
+document.addEventListener('change',e=>{if(e.target.matches('input,select'))renderAll();});
+
+let toastT;function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),1600);}
+function copy(text,msg){
+  const done=()=>toast(msg||'Copied');
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,()=>fallback());}else fallback();
+  function fallback(){try{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);done();}catch(e){toast('Copy failed, select the text manually');}}
+}
+document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>copy($(b.dataset.copy).textContent,'Methods note copied')));
+document.querySelectorAll('[data-share]').forEach(b=>b.addEventListener('click',()=>copy(location.origin!=='null'&&location.protocol.indexOf('http')===0?location.href.split('?')[0]+'?'+query():location.href.split('?')[0]+'?'+query(),'Link copied')));
+
+/* theme toggle: auto → dark → light */
+const themeBtn=$('theme');
+function applyTheme(t){if(t)document.documentElement.setAttribute('data-theme',t);else document.documentElement.removeAttribute('data-theme');themeBtn.textContent='Theme: '+(t||'auto');try{if(t)localStorage.setItem('sp-theme',t);else localStorage.removeItem('sp-theme');}catch(e){}}
+try{applyTheme(localStorage.getItem('sp-theme')||'');}catch(e){}
+themeBtn.addEventListener('click',()=>{const cur=document.documentElement.getAttribute('data-theme')||'';applyTheme(cur===''?'dark':cur==='dark'?'light':'');});
+
+/* read state from URL */
+(function init(){
+  const q=new URLSearchParams(location.search);
+  IDS.forEach(id=>{if(q.has(id)){const el=$(id);if(el)el.value=q.get(id);}});
+  if(q.has('tab'))active=q.get('tab');
+  setTab(active);renderAll();
+})();
+})();
+</script>
+</body>
+</html>
