@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>আয়কর ক্যালকুলেটর ২০২৬-২৭</title>
+<meta name="description" content="Tax Hishab 2026-27 — বাংলাদেশের ব্যক্তি করদাতার জন্য বিনামূল্যে আয়কর হিসাব: করমুক্ত সীমা, স্ল্যাব, বিনিয়োগ রিবেট, ন্যূনতম কর ও রিটার্ন জমার সময় অনুযায়ী অতিরিক্ত — করবর্ষ ২০২৬-২৭ (আয়বর্ষ ১ জুলাই ২০২৫ – ৩০ জুন ২০২৬)।">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --maroon:#7A1F2B; --maroon-deep:#5E1520; --mustard:#E0A526; --mustard-soft:#F6E3B3; --cream:#FBF6EC;
+  --bg:#FBF6EC; --surface:#FFFDF8; --surface-2:#F4EBDA; --text:#2A1B1E; --muted:#6F5C60; --line:#E6D9C3;
+  --accent:#7A1F2B; --accent-ink:#FFFFFF; --gold:#B8820F; --ok:#2E6B3F; --warn-bg:#FFF4D6; --warn-ink:#6B4A00;
+  --shadow:0 1px 2px rgba(42,27,30,.06),0 8px 24px rgba(42,27,30,.08);
+  --radius:14px; --gutter:16px;
+  --font-bn:"Hind Siliguri","Inter",system-ui,sans-serif; --font-en:"Inter","Hind Siliguri",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17100F; --surface:#221717; --surface-2:#2C1F1F; --text:#F3E9DA; --muted:#B9A8A3; --line:#3C2B2B;
+    --accent:#D9A62E; --accent-ink:#1B1210; --maroon:#C8475A; --maroon-deep:#E0A526; --gold:#E0A526;
+    --ok:#7FCB95; --warn-bg:#3A2D12; --warn-ink:#F3D98A; --mustard-soft:#3E2F17;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17100F; --surface:#221717; --surface-2:#2C1F1F; --text:#F3E9DA; --muted:#B9A8A3; --line:#3C2B2B;
+  --accent:#D9A62E; --accent-ink:#1B1210; --maroon:#C8475A; --maroon-deep:#E0A526; --gold:#E0A526;
+  --ok:#7FCB95; --warn-bg:#3A2D12; --warn-ink:#F3D98A; --mustard-soft:#3E2F17;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-bn);font-size:17px;line-height:1.55;overflow-x:hidden}
+.en{font-family:var(--font-en);font-size:.8em;color:var(--muted);letter-spacing:.01em}
+.wrap{max-width:720px;margin:0 auto;padding:0 var(--gutter)}
+header.hero{background:linear-gradient(160deg,var(--maroon) 0%,var(--maroon-deep) 100%);color:#FFF8EC;padding:28px 0 30px;position:relative;overflow:hidden}
+:root[data-theme="dark"] header.hero{background:linear-gradient(160deg,#4A141D,#2B0D13)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) header.hero{background:linear-gradient(160deg,#4A141D,#2B0D13)}}
+header.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:var(--mustard);opacity:.18}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-en);font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:#F6E3B3}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--mustard);display:inline-block}
+h1{font-size:clamp(28px,6vw,38px);line-height:1.2;margin:10px 0 6px;font-weight:700;color:#FFF}
+.hero p{margin:0;color:#F6E3B3;font-size:16px}
+.hero .pill{display:inline-block;margin-top:14px;background:rgba(255,255,255,.12);border:1px solid rgba(246,227,179,.45);color:#FFF;border-radius:999px;padding:5px 12px;font-size:14px}
+main{padding:20px 0 40px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px var(--gutter);margin:16px 0}
+.card h2{font-size:20px;margin:0 0 12px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.card h2 .en{font-size:13px}
+.field{margin:14px 0}
+label.lbl, .lbl{display:block;font-weight:600;margin-bottom:6px}
+.hint{font-size:14px;color:var(--muted);margin:4px 0 0}
+input[type=number],select{width:100%;font:inherit;font-size:18px;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);min-height:48px}
+input[type=number]{font-family:var(--font-en);font-variant-numeric:tabular-nums}
+input:focus,select:focus{outline:3px solid var(--mustard);outline-offset:1px;border-color:var(--gold)}
+.money{position:relative}
+.money input{padding-left:36px}
+.money::before{content:"৳";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:18px}
+.radios{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:480px){.radios{grid-template-columns:1fr 1fr}}
+.radio{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;background:var(--surface)}
+.radio:has(input:checked){border-color:var(--accent);background:var(--surface-2)}
+.radio input{margin-top:5px;accent-color:var(--maroon);width:18px;height:18px;flex:none}
+.radio span{display:block}
+.radio .sub{font-size:13px;color:var(--muted)}
+.seg{display:flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.seg label{flex:1;text-align:center;padding:10px;cursor:pointer;font-weight:500}
+.seg label:has(input:checked){background:var(--accent);color:var(--accent-ink)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.two{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:560px){.two{grid-template-columns:1fr 1fr}}
+.result-top{background:linear-gradient(135deg,var(--maroon),var(--maroon-deep));color:#FFF;border-radius:var(--radius);padding:20px var(--gutter);text-align:center}
+:root[data-theme="dark"] .result-top{background:linear-gradient(135deg,#4A141D,#2B0D13)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .result-top{background:linear-gradient(135deg,#4A141D,#2B0D13)}}
+.result-top .k{font-size:16px;color:#F6E3B3;margin:0}
+.result-top .v{font-size:clamp(34px,9vw,48px);font-weight:700;line-height:1.15;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.result-top .en{color:#E8D4B5;font-size:14px}
+.result-top .msg{margin-top:10px;background:rgba(255,255,255,.12);border-radius:10px;padding:8px 12px;font-size:15px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.rows td{padding:9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.rows td:last-child{text-align:right;white-space:nowrap;font-weight:600}
+.rows td .en{display:block}
+.rows tr.total td{border-bottom:0;border-top:2px solid var(--text);font-size:18px;padding-top:12px}
+.rows tr.dim td{color:var(--muted);font-weight:400}
+.rows td small{display:block;color:var(--muted);font-size:13px;font-weight:400}
+.slabs th{font-size:13px;text-align:left;color:var(--muted);font-weight:500;padding:6px 0;border-bottom:1px solid var(--line)}
+.slabs td{padding:7px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.slabs td:nth-child(2),.slabs td:nth-child(3),.slabs th:nth-child(2),.slabs th:nth-child(3){text-align:right}
+.slabs tr.zero td{color:var(--muted)}
+.note{background:var(--warn-bg);color:var(--warn-ink);border-left:4px solid var(--mustard);border-radius:8px;padding:10px 12px;font-size:14.5px;margin:12px 0}
+.note a{color:inherit}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--mustard);color:#2A1B1E;vertical-align:middle;margin-left:4px}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:10px 0;background:var(--surface-2)}
+summary{cursor:pointer;font-weight:600}
+ul.check{list-style:none;padding:0;margin:0}
+ul.check li{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+ul.check li::before{content:"☐";color:var(--gold);font-size:18px;line-height:1.2;flex:none}
+.faq details{background:var(--surface)}
+.faq p{margin:8px 0 0;color:var(--muted);font-size:15.5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 18px;border-radius:12px;font-weight:600;text-decoration:none;font-size:16px;border:2px solid transparent;cursor:pointer}
+.btn-primary{background:var(--mustard);color:#2A1B1E}
+.btn-outline{border-color:var(--accent);color:var(--accent);background:transparent}
+.btn-wa{background:#1F8F55;color:#FFF}
+.promo{border:2px solid var(--mustard);background:linear-gradient(180deg,var(--surface),var(--surface-2))}
+.promo .price{font-family:var(--font-en);font-weight:700;font-size:22px;color:var(--maroon)}
+.promo ul{margin:8px 0 14px;padding-left:20px;color:var(--muted);font-size:15px}
+.tools{display:flex;gap:10px;flex-wrap:wrap}
+.ad-slot{margin:14px 0;min-height:0}
+.ad-slot:empty{display:none}
+.ad-slot:not(:empty)::before{content:attr(data-label);display:block;font-size:11px;color:var(--muted);text-align:center;letter-spacing:.1em;text-transform:uppercase}
+.disclaimer{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
+.sources li{font-size:14px;margin:6px 0;word-break:break-word}
+a{color:var(--maroon)}
+.sr{position:absolute;left:-9999px}
+.theme-toggle{position:absolute;right:var(--gutter);top:14px;background:rgba(255,255,255,.14);color:#FFF;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"২০২৬-২৭ করবর্ষে করমুক্ত আয়ের সীমা কত?","acceptedAnswer":{"@type":"Answer","text":"অর্থ আইন ২০২৬ অনুযায়ী সাধারণ করদাতার করমুক্ত সীমা ৳৪,০০,০০০; নারী ও ৬৫ বছরের বেশি বয়সী ৳৪,৫০,০০০; প্রতিবন্ধী ব্যক্তি ও তৃতীয় লিঙ্গ ৳৫,২৫,০০০; গেজেটভুক্ত যুদ্ধাহত মুক্তিযোদ্ধা ও জুলাই যোদ্ধা ৳৫,৫০,০০০। প্রতিবন্ধী সন্তানের অভিভাবক প্রতি সন্তানে অতিরিক্ত ৳৫০,০০০ পান।"}},
+{"@type":"Question","name":"বেতন আয়ের কত অংশ করমুক্ত?","acceptedAnswer":{"@type":"Answer","text":"আয়কর আইন ২০২৩-এর ষষ্ঠ তফসিল অনুযায়ী বেতন আয়ের এক-তৃতীয়াংশ অথবা ৳৫,০০,০০০ — যেটি কম — করমুক্ত। বাকি অংশ করযোগ্য আয়ে যুক্ত হয়।"}},
+{"@type":"Question","name":"বিনিয়োগে কত টাকা কর রিবেট পাওয়া যায়?","acceptedAnswer":{"@type":"Answer","text":"করযোগ্য আয়ের ৩%, যোগ্য বিনিয়োগের ১০% অথবা ৳৭,৫০,০০০ — এই তিনটির মধ্যে যেটি সবচেয়ে কম, সেটিই রিবেট (অর্থ আইন ২০২৬ অনুযায়ী প্রকাশিত সূত্র)। আগের নিয়মে হার ছিল ১৫% ও সীমা ৳১০ লাখ; আপনার রিটার্ন ফর্মে যাচাই করে নিন।"}},
+{"@type":"Question","name":"রিটার্ন দেরিতে জমা দিলে কী হয়?","acceptedAnswer":{"@type":"Answer","text":"২০২৬-২৭ করবর্ষে অক্টোবর–ডিসেম্বরে জমা দিলে কোনো অতিরিক্ত নেই। জানুয়ারি–মার্চে জমা দিলে দেয় করের ২% বা ন্যূনতম ৳৩,০০০ এবং এপ্রিল–জুনে ৫% বা ন্যূনতম ৳৫,০০০ অতিরিক্ত দিতে হয়। জুলাই–সেপ্টেম্বরে জমা দিলে ৫% (সর্বোচ্চ ৳২৫,০০০) রিবেট ছিল, যা এখন শেষ।"}}
+]}
+</script>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Tax Hishab 2026-27</div>
+    <h1>আয়কর ক্যালকুলেটর ২০২৬-২৭</h1>
+    <p>ব্যক্তি করদাতার আনুমানিক আয়কর হিসাব <span class="en" style="color:#E8D4B5">· Bangladesh individual income-tax estimator</span></p>
+    <p style="margin-top:6px;font-size:15px">করবর্ষ ২০২৬-২৭ · আয়বর্ষ ১ জুলাই ২০২৫ – ৩০ জুন ২০২৬</p>
+    <span class="pill">ই-রিটার্ন চলছে: অক্টোবর–ডিসেম্বরে জমা দিলে কোনো অতিরিক্ত নেই</span>
+    <button class="theme-toggle" type="button" id="themeBtn" aria-label="Toggle dark mode">◐ থিম</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="ad-slot" data-label="বিজ্ঞাপন" aria-label="advertisement"><!-- AD_SLOT_TOP --></div>
+
+  <form class="card" id="taxForm" autocomplete="off">
+    <h2>আপনার তথ্য দিন <span class="en">Your details</span></h2>
+
+    <div class="field">
+      <span class="lbl" id="catLbl">করদাতার ধরন <span class="en">Taxpayer category</span></span>
+      <div class="radios" role="radiogroup" aria-labelledby="catLbl">
+        <label class="radio"><input type="radio" name="cat" value="general" checked><span>সাধারণ করদাতা<span class="sub">General · করমুক্ত সীমা ৳৪,০০,০০০</span></span></label>
+        <label class="radio"><input type="radio" name="cat" value="woman"><span>নারী করদাতা<span class="sub">Woman · ৳৪,৫০,০০০</span></span></label>
+        <label class="radio"><input type="radio" name="cat" value="senior"><span>৬৫ বছর বা তার বেশি<span class="sub">Senior 65+ · ৳৪,৫০,০০০</span></span></label>
+        <label class="radio"><input type="radio" name="cat" value="disabled"><span>প্রতিবন্ধী ব্যক্তি<span class="sub">Person with disability · ৳৫,২৫,০০০</span></span></label>
+        <label class="radio"><input type="radio" name="cat" value="third"><span>তৃতীয় লিঙ্গ<span class="sub">Third gender · ৳৫,২৫,০০০</span></span></label>
+        <label class="radio"><input type="radio" name="cat" value="ff"><span>গেজেটভুক্ত যুদ্ধাহত মুক্তিযোদ্ধা / জুলাই যোদ্ধা<span class="sub">War-wounded freedom fighter / July warrior · ৳৫,৫০,০০০</span></span></label>
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="field">
+        <label class="lbl" for="children">প্রতিবন্ধী সন্তান/পোষ্যের সংখ্যা <span class="en">Children with disability</span></label>
+        <input type="number" id="children" min="0" max="10" step="1" value="0" inputmode="numeric">
+        <p class="hint">প্রতি সন্তানে করমুক্ত সীমা আরও ৳৫০,০০০ বাড়ে (বাবা-মায়ের যেকোনো একজন)।</p>
+      </div>
+      <div class="field">
+        <span class="lbl" id="ftLbl">প্রথমবার রিটার্ন দিচ্ছেন? <span class="en">First-time filer</span></span>
+        <div class="seg" role="radiogroup" aria-labelledby="ftLbl">
+          <label><input type="radio" name="first" value="no" checked>না</label>
+          <label><input type="radio" name="first" value="yes">হ্যাঁ</label>
+        </div>
+        <p class="hint">নতুন করদাতার ন্যূনতম কর ৳১,০০০ (অন্যদের ৳৫,০০০)।</p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl" for="salary">বার্ষিক বেতন আয় <span class="en">Annual salary income (gross)</span></label>
+      <div class="money"><input type="number" id="salary" min="0" step="1000" placeholder="0" inputmode="numeric"></div>
+      <p class="hint">১ জুলাই ২০২৫ – ৩০ জুন ২০২৬-এ পাওয়া মোট বেতন: মূল বেতন, বাড়িভাড়া ভাতা, চিকিৎসা ও যাতায়াত ভাতা, উৎসব বোনাস, ওভারটাইম, নিয়োগকর্তার প্রভিডেন্ট ফান্ড অংশ ইত্যাদি সব মিলিয়ে। এর এক-তৃতীয়াংশ বা ৳৫,০০,০০০ (যেটি কম) করমুক্ত — হিসাব স্বয়ংক্রিয়ভাবে হবে।</p>
+    </div>
+
+    <div class="field">
+      <label class="lbl" for="other">অন্যান্য আয় <span class="en">Other income</span></label>
+      <div class="money"><input type="number" id="other" min="0" step="1000" placeholder="0" inputmode="numeric"></div>
+      <p class="hint">ব্যবসা/পেশার নিট মুনাফা, বাড়িভাড়া (অনুমোদিত খরচ বাদে), ব্যাংক সুদ/মুনাফা, অন্যান্য আয়। সঞ্চয়পত্রের সুদের মতো চূড়ান্ত-কর (final tax) আয় এখানে দেবেন না।</p>
+    </div>
+
+    <div class="field">
+      <label class="lbl" for="invest">যোগ্য বিনিয়োগ <span class="en">Eligible investment</span></label>
+      <div class="money"><input type="number" id="invest" min="0" step="1000" placeholder="0" inputmode="numeric"></div>
+      <p class="hint">ব্যাংক DPS (বছরে সর্বোচ্চ ৳১,২০,০০০), স্বীকৃত প্রভিডেন্ট ফান্ডে জমা (নিজের ও নিয়োগকর্তার), জীবনবিমা প্রিমিয়াম (বিমা অঙ্কের ১০% পর্যন্ত), সঞ্চয়পত্র, তালিকাভুক্ত শেয়ার/মিউচুয়াল ফান্ড/সরকারি সিকিউরিটিজ, জাকাত/অনুমোদিত দান।</p>
+    </div>
+
+    <div class="two">
+      <div class="field">
+        <label class="lbl" for="paid">ইতিমধ্যে পরিশোধিত কর <span class="en">Tax already paid (TDS/AIT/advance)</span></label>
+        <div class="money"><input type="number" id="paid" min="0" step="100" placeholder="0" inputmode="numeric"></div>
+        <p class="hint">বেতন থেকে উৎসে কর্তন, ব্যাংক সুদে কর্তন, গাড়ির অগ্রিম কর, অগ্রিম কর চালান — সব যোগ করুন।</p>
+      </div>
+      <div class="field">
+        <label class="lbl" for="month">রিটার্ন জমার সময় <span class="en">Planned filing window</span></label>
+        <select id="month">
+          <option value="q2" selected>অক্টোবর–ডিসেম্বর ২০২৬ — কোনো অতিরিক্ত নেই</option>
+          <option value="q3">জানুয়ারি–মার্চ ২০২৭ — +২% (ন্যূনতম ৳৩,০০০)</option>
+          <option value="q4">এপ্রিল–জুন ২০২৭ — +৫% (ন্যূনতম ৳৫,০০০)</option>
+        </select>
+        <p class="hint">জুলাই–সেপ্টেম্বরে জমা দিলে ৫% (সর্বোচ্চ ৳২৫,০০০) রিবেট ছিল — সেই সময় শেষ।</p>
+      </div>
+    </div>
+  </form>
+
+  <section class="card" aria-live="polite" id="results">
+    <h2>হিসাবের ফলাফল <span class="en">Result</span></h2>
+    <div class="result-top">
+      <p class="k" id="payLabel">এখন দিতে হবে <span class="en">Amount to pay now</span></p>
+      <div class="v" id="r-paynow" data-value="0">৳০</div>
+      <div class="en" id="r-paynow-en">Tk 0</div>
+      <div class="msg" id="r-msg" hidden></div>
+    </div>
+
+    <table class="rows" style="margin-top:14px">
+      <tbody>
+        <tr><td>বেতন থেকে করমুক্ত অংশ<small>Salary exemption — এক-তৃতীয়াংশ বা ৳৫,০০,০০০, যেটি কম</small></td><td id="r-exempt" data-value="0">৳০</td></tr>
+        <tr><td>মোট করযোগ্য আয়<small>Total taxable income</small></td><td id="r-taxable" data-value="0">৳০</td></tr>
+        <tr><td>করমুক্ত সীমা<small>Tax-free threshold</small></td><td id="r-threshold" data-value="400000">৳৪,০০,০০০</td></tr>
+        <tr><td>স্ল্যাব অনুযায়ী কর<small>Gross slab tax</small></td><td id="r-gross" data-value="0">৳০</td></tr>
+        <tr><td>বিনিয়োগ রিবেট (−)<small id="r-rebate-note">Investment rebate</small></td><td id="r-rebate" data-value="0">৳০</td></tr>
+        <tr><td>ন্যূনতম কর<small id="r-min-note">Minimum tax rule</small></td><td id="r-min" data-value="0">—</td></tr>
+        <tr><td>নিট কর<small>Net tax after rebate</small></td><td id="r-net" data-value="0">৳০</td></tr>
+        <tr><td>জমার সময় অনুযায়ী অতিরিক্ত (+)<small id="r-sur-note">Filing-window addition</small></td><td id="r-surcharge" data-value="0">৳০</td></tr>
+        <tr><td>মোট দেয় কর<small>Total tax liability</small></td><td id="r-total" data-value="0">৳০</td></tr>
+        <tr><td>ইতিমধ্যে পরিশোধিত (−)<small>Already paid</small></td><td id="r-paid" data-value="0">৳০</td></tr>
+        <tr class="total"><td>এখন দিতে হবে<small>Pay now</small></td><td id="r-paynow2" data-value="0">৳০</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:17px;margin:18px 0 6px">স্ল্যাবভিত্তিক হিসাব <span class="en">Slab breakdown</span></h3>
+    <table class="slabs">
+      <thead><tr><th>স্ল্যাব</th><th>আয়</th><th>কর</th></tr></thead>
+      <tbody id="slabBody"></tbody>
+    </table>
+
+    <div class="note" id="verifyNote">
+      <strong>যাচাই করুন <span class="badge">উৎসে মতভেদ</span></strong><br>
+      বিনিয়োগ রিবেট এখানে <b>১০%</b> হারে ও সর্বোচ্চ <b>৳৭.৫ লাখ</b> ধরা হয়েছে (অর্থ আইন ২০২৬ — PwC, জুলাই ২০২৬)। কিছু উৎসে পুরোনো নিয়ম (১৫%, সর্বোচ্চ ৳১০ লাখ) এখনো দেখানো হয়। বেতনের করমুক্ত অংশের সীমা ৳৫,০০,০০০ ধরা হয়েছে (আগে ৳৪,৫০,০০০)। দেরিতে জমার অতিরিক্ত অঙ্ক রিবেট-পরবর্তী নিট করের উপর ধরা হয়েছে। চূড়ান্ত অঙ্ক <a href="https://etaxnbr.gov.bd" target="_blank" rel="noopener">etaxnbr.gov.bd</a>-এর ফর্মে মিলিয়ে নিন। সূত্র নিচে।
+    </div>
+
+    <details>
+      <summary>সম্পদ সারচার্জ (নিট সম্পদ ৳৪ কোটির বেশি হলে) — শুধু তথ্য</summary>
+      <table class="slabs" style="margin-top:8px"><thead><tr><th>নিট সম্পদ</th><th>সারচার্জ (করের উপর)</th></tr></thead>
+      <tbody>
+        <tr><td>৳৪ কোটি পর্যন্ত</td><td style="text-align:right">নেই</td></tr>
+        <tr><td>৳৪–১০ কোটি, বা একাধিক গাড়ি, বা ৮,০০০ বর্গফুটের বেশি বাড়ি</td><td style="text-align:right">১০%</td></tr>
+        <tr><td>৳১০–২০ কোটি</td><td style="text-align:right">২০%</td></tr>
+        <tr><td>৳২০–৫০ কোটি</td><td style="text-align:right">৩০%</td></tr>
+        <tr><td>৳৫০ কোটির বেশি</td><td style="text-align:right">৩৫%</td></tr>
+      </tbody></table>
+      <p class="hint">এই ক্যালকুলেটরে সারচার্জ যোগ করা হয়নি; প্রযোজ্য হলে নিট করের উপর আলাদাভাবে যোগ হবে (সূত্র: PwC, জুলাই ২০২৬)।</p>
+    </details>
+  </section>
+
+  <section class="card promo">
+    <h2>আয়কর হিসাব শীট ২০২৬-২৭ <span class="en">Excel / Google Sheets workbook</span></h2>
+    <div class="price">৳99 <span class="en" style="font-size:14px">/ $3</span></div>
+    <ul>
+      <li>এই ক্যালকুলেটরের পুরো হিসাব — ফর্মুলাসহ, নিজের মতো বদলানো যায়</li>
+      <li>বিনিয়োগ ট্র্যাকার, ই-রিটার্ন চেকলিস্ট ও সূত্র — এক ফাইলে</li>
+      <li>স্ল্যাব টেবিল আলাদা শীটে — পরের বছর নিজেই আপডেট করুন</li>
+      <li>Excel 2016+ ও Google Sheets-এ চলে</li>
+    </ul>
+    <a class="btn btn-primary" href="{{SHEET_LINK}}" id="sheetBtn">শীটটি নিন · Get the sheet</a>
+  </section>
+
+  <section class="card" id="helpCard">
+    <h2>রিটার্ন নিয়ে সাহায্য লাগবে? <span class="en">Need help filing?</span></h2>
+    <p class="hint" style="margin:0 0 12px">ই-রিটার্ন পূরণে আটকে গেলে WhatsApp-এ বার্তা দিন।</p>
+    <a class="btn btn-wa" href="{{WHATSAPP_LINK}}" id="waBtn" data-placeholder="1">WhatsApp-এ বার্তা দিন</a>
+  </section>
+
+  <section class="card">
+    <h2>ই-রিটার্ন চেকলিস্ট <span class="en">Documents to gather</span></h2>
+    <ul class="check">
+      <li>ই-টিআইএন সনদ (e-TIN) ও জাতীয় পরিচয়পত্র; etaxnbr.gov.bd-এ নিবন্ধিত মোবাইল নম্বর (OTP-র জন্য)</li>
+      <li>বেতন সনদ/স্যালারি সার্টিফিকেট বা ১২ মাসের পে-স্লিপ (১ জুলাই ২০২৫ – ৩০ জুন ২০২৬)</li>
+      <li>সব ব্যাংক হিসাবের স্টেটমেন্ট (৩০ জুন ২০২৬ পর্যন্ত) ও সুদ/মুনাফার সনদ</li>
+      <li>উৎসে কর কর্তনের (TDS) সনদ ও অগ্রিম কর/চালানের কপি</li>
+      <li>বিনিয়োগের প্রমাণ: DPS স্টেটমেন্ট, সঞ্চয়পত্র, জীবনবিমা প্রিমিয়াম রসিদ, প্রভিডেন্ট ফান্ড স্টেটমেন্ট, BO হিসাব/শেয়ার বিবরণী</li>
+      <li>বাড়িভাড়া আয় থাকলে: ভাড়ার চুক্তি, ভাড়ার রসিদ, পৌরকর ও মেরামত খরচের প্রমাণ</li>
+      <li>গত বছরের রিটার্নের প্রাপ্তিস্বীকার (acknowledgement) — সম্পদের প্রারম্ভিক তথ্যের জন্য</li>
+      <li>সম্পদ ও দায়ের বিবরণ: জমি/ফ্ল্যাটের দলিল, গাড়ির কাগজ, ঋণের স্টেটমেন্ট</li>
+      <li>জীবনযাপন ব্যয়ের হিসাব (IT-10BB প্রযোজ্য হলে): বাসা ভাড়া, ইউটিলিটি, শিক্ষা, যাতায়াত</li>
+    </ul>
+  </section>
+
+  <section class="card faq">
+    <h2>সাধারণ প্রশ্ন <span class="en">FAQ</span></h2>
+    <details><summary>২০২৬-২৭ করবর্ষে করমুক্ত আয়ের সীমা কত?</summary><p>সাধারণ করদাতা ৳৪,০০,০০০; নারী ও ৬৫+ ৳৪,৫০,০০০; প্রতিবন্ধী ব্যক্তি ও তৃতীয় লিঙ্গ ৳৫,২৫,০০০; গেজেটভুক্ত যুদ্ধাহত মুক্তিযোদ্ধা ও জুলাই যোদ্ধা ৳৫,৫০,০০০। প্রতিবন্ধী সন্তানের অভিভাবক প্রতি সন্তানে অতিরিক্ত ৳৫০,০০০।</p></details>
+    <details><summary>বেতন আয়ের কত অংশ করমুক্ত?</summary><p>বেতন আয়ের এক-তৃতীয়াংশ অথবা ৳৫,০০,০০০ — যেটি কম — করমুক্ত (আয়কর আইন ২০২৩, ষষ্ঠ তফসিল, ১ম অংশ, অনুচ্ছেদ ২৭)। বাকি অংশ করযোগ্য।</p></details>
+    <details><summary>বিনিয়োগে কত কর রিবেট পাওয়া যায়?</summary><p>করযোগ্য আয়ের ৩%, যোগ্য বিনিয়োগের ১০% অথবা ৳৭,৫০,০০০ — যেটি সবচেয়ে কম। আগের নিয়মে ১৫% ও ৳১০ লাখ ছিল; রিটার্ন ফর্মে যাচাই করুন।</p></details>
+    <details><summary>রিটার্ন দেরিতে জমা দিলে কী হয়?</summary><p>অক্টোবর–ডিসেম্বরে কোনো অতিরিক্ত নেই। জানুয়ারি–মার্চে দেয় করের ২% বা ন্যূনতম ৳৩,০০০; এপ্রিল–জুনে ৫% বা ন্যূনতম ৳৫,০০০ অতিরিক্ত দিতে হয়।</p></details>
+  </section>
+
+  <section class="card">
+    <h2>আরও টুল <span class="en">More tools</span></h2>
+    <div class="tools">
+      <a class="btn btn-outline" href="../bijoy/" data-placeholder="1">বিজয় ↔ ইউনিকোড কনভার্টার</a>
+      <a class="btn btn-outline" href="{{TRACKER_LINK}}" data-placeholder="1">খরচ ট্র্যাকার</a>
+    </div>
+  </section>
+
+  <section class="card sources">
+    <h2>সূত্র <span class="en">Sources (verified 7 Oct 2026)</span></h2>
+    <ul>
+      <li>The Daily Star, 30 Jun 2026 — Finance bill passed: tax-free threshold Tk 4 lakh for FY2026-27 — <a href="https://www.thedailystar.net/business/bangladesh-budget-2025-26/news/finance-bill-passed-tax-free-income-threshold-set-tk-4-lakh-fy2026-27-4211511" target="_blank" rel="noopener">thedailystar.net</a></li>
+      <li>PwC Worldwide Tax Summaries — Bangladesh: Taxes on personal income (slabs, thresholds, minimum tax, wealth surcharge; reviewed 31 Jul 2026) — <a href="https://taxsummaries.pwc.com/bangladesh/individual/taxes-on-personal-income" target="_blank" rel="noopener">taxsummaries.pwc.com</a></li>
+      <li>PwC — Bangladesh: Deductions (salary exemption ⅓ or Tk 500,000; rebate 3% / 10% / Tk 750,000) — <a href="https://taxsummaries.pwc.com/bangladesh/individual/deductions" target="_blank" rel="noopener">taxsummaries.pwc.com/…/deductions</a></li>
+      <li>The Business Standard, 22 Jul 2026 — NBR launches e-return for FY2026-27 (Jul–Sep 5% rebate, additional tax after December) — <a href="https://www.tbsnews.net/nbr/nbr-launches-e-return-service-individual-taxpayers-fy2026-27-1494651" target="_blank" rel="noopener">tbsnews.net</a></li>
+      <li>Prothom Alo English, 11 Jun 2026 — quarter-wise filing rebate/addition schedule (5% / −; +2% min 3,000; +5% min 5,000) — <a href="https://en.prothomalo.com/business/local/0sug1clq5v" target="_blank" rel="noopener">en.prothomalo.com</a></li>
+      <li>Ekush WML, 8 Jul 2026 — Tax rebate on investment, 2026 guide (Finance Act 2026: 10% / 3% / Tk 7.5 lakh; eligible list) — <a href="https://ekushwml.com/insights/tax-rebate-investment-bangladesh" target="_blank" rel="noopener">ekushwml.com</a></li>
+      <li>Arthonitee — Bangladesh tax changes 2026-27 (minimum tax Tk 5,000 / new filer Tk 1,000; salary cap Tk 5,00,000; still lists 15% / Tk 10 lakh rebate) — <a href="https://www.arthonitee.com/guides/bangladesh-tax-changes-2026-27" target="_blank" rel="noopener">arthonitee.com</a></li>
+    </ul>
+    <p class="disclaimer"><strong>দায়মুক্তি:</strong> এটি শুধুই আনুমানিক হিসাব, কোনো কর-পরামর্শ নয়। নিয়মগুলো ৭ অক্টোবর ২০২৬-এ প্রকাশিত সূত্র অনুযায়ী; এনবিআরের পরিপত্র বা ই-রিটার্ন ফর্মের সঙ্গে অমিল থাকলে ফর্মই চূড়ান্ত। চূড়ান্ত হিসাব <a href="https://etaxnbr.gov.bd" target="_blank" rel="noopener">etaxnbr.gov.bd</a>-এ যাচাই করুন বা একজন আয়কর আইনজীবী/ITP-র পরামর্শ নিন। আয় করমুক্ত সীমার নিচে হলেও TIN থাকলে সাধারণত রিটার্ন জমা দেওয়া বাধ্যতামূলক। <span class="en">Estimate only — not tax advice.</span></p>
+  </section>
+
+  <div class="ad-slot" data-label="বিজ্ঞাপন" aria-label="advertisement"><!-- AD_SLOT_BOTTOM --></div>
+</main>
+<footer>Tax Hishab 2026-27 · তৈরি বাংলাদেশের করদাতাদের জন্য · সব হিসাব আপনার ব্রাউজারেই হয়, কোনো তথ্য সার্ভারে যায় না</footer>
+
+<script>
+(function(){
+  var RULES={
+    thresholds:{general:400000,woman:450000,senior:450000,disabled:525000,third:525000,ff:550000},
+    childAdd:50000,
+    slabs:[[300000,0.10],[400000,0.15],[500000,0.20],[2000000,0.25],[Infinity,0.30]],
+    salaryExemptCap:500000,
+    rebate:{pctIncome:0.03,pctInvest:0.10,cap:750000},
+    minTax:5000,minTaxFirst:1000,
+    filing:{q2:null,q3:{pct:0.02,floor:3000},q4:{pct:0.05,floor:5000}}
+  };
+  var BN='০১২৩৪৫৬৭৮৯';
+  function bn(s){return String(s).replace(/\d/g,function(d){return BN[d];});}
+  function lakh(n){var s=String(Math.round(Math.abs(n)));if(s.length<=3)return s;var last=s.slice(-3),rest=s.slice(0,-3);rest=rest.replace(/\B(?=(\d{2})+(?!\d))/g,',');return rest+','+last;}
+  function tk(n){return (n<0?'−':'')+'৳'+bn(lakh(n));}
+  function tkEn(n){return (n<0?'-':'')+'Tk '+lakh(n);}
+  function pct(p){return bn(Math.round(p*100))+'%';}
+  function num(id){var v=parseFloat(document.getElementById(id).value);return isFinite(v)&&v>0?v:0;}
+  function val(name){var el=document.querySelector('input[name="'+name+'"]:checked');return el?el.value:null;}
+  function setMoney(id,n,extra){var el=document.getElementById(id);var r=Math.round(n);el.dataset.value=r;el.innerHTML=tk(r)+(extra||'')+'<span class="en">'+tkEn(r)+'</span>';}
+  function setMoneyPlain(id,n){var el=document.getElementById(id);var r=Math.round(n);el.dataset.value=r;el.textContent=tk(r);}
+  var SLAB_LABELS=['পরবর্তী ৳৩,০০,০০০','পরবর্তী ৳৪,০০,০০০','পরবর্তী ৳৫,০০,০০০','পরবর্তী ৳২০,০০,০০০','অবশিষ্ট'];
+
+  function compute(inp){
+    var exempt=Math.min(inp.salary/3,RULES.salaryExemptCap);
+    var taxable=Math.max(0,inp.salary-exempt)+inp.other;
+    var threshold=RULES.thresholds[inp.cat]+inp.children*RULES.childAdd;
+    var above=Math.max(0,taxable-threshold),rem=above,rows=[],gross=0;
+    for(var i=0;i<RULES.slabs.length;i++){var w=RULES.slabs[i][0],r=RULES.slabs[i][1];var amt=Math.min(rem,w);var t=amt*r;rows.push({amt:amt,rate:r,tax:t});gross+=t;rem-=amt;}
+    var overThreshold=taxable>threshold;
+    var rebateRaw=overThreshold?Math.min(RULES.rebate.pctIncome*taxable,RULES.rebate.pctInvest*inp.invest,RULES.rebate.cap):0;
+    var rebate=Math.min(rebateRaw,gross);
+    var afterRebate=gross-rebate;
+    var minTax=inp.first?RULES.minTaxFirst:RULES.minTax;
+    var minApplied=overThreshold&&afterRebate<minTax;
+    var net=overThreshold?Math.max(afterRebate,minTax):0;
+    var f=RULES.filing[inp.month],sur=0;
+    if(f&&net>0){sur=Math.max(f.pct*net,f.floor);}
+    var total=net+sur;
+    var payNow=total-inp.paid;
+    return {exempt:exempt,taxable:taxable,threshold:threshold,above:above,rows:rows,gross:gross,rebateRaw:rebateRaw,rebate:rebate,afterRebate:afterRebate,minTax:minTax,minApplied:minApplied,net:net,sur:sur,total:total,payNow:payNow,overThreshold:overThreshold,filing:f};
+  }
+
+  function render(){
+    var inp={cat:val('cat')||'general',children:Math.max(0,Math.floor(num('children'))),first:val('first')==='yes',salary:num('salary'),other:num('other'),invest:num('invest'),paid:num('paid'),month:document.getElementById('month').value};
+    var o=compute(inp);
+    var pay=Math.round(o.payNow);
+    var top=document.getElementById('r-paynow');top.dataset.value=pay;top.textContent=tk(Math.max(pay,0));
+    document.getElementById('r-paynow-en').textContent=tkEn(Math.max(pay,0));
+    var msg=document.getElementById('r-msg');
+    if(!o.overThreshold){
+      msg.hidden=false;
+      msg.innerHTML=(o.taxable>0||inp.salary>0)?'<b>কোনো কর নেই, তবু রিটার্ন জমা দিতে হবে।</b> করযোগ্য আয় করমুক্ত সীমার নিচে, তাই কর বা ন্যূনতম কর প্রযোজ্য নয়। TIN থাকলে সাধারণত শূন্য রিটার্ন জমা দেওয়া বাধ্যতামূলক' + (o.filing?' — দেরিতে জমায় ন্যূনতম '+tk(o.filing.floor)+' অতিরিক্ত প্রযোজ্য হতে পারে, যাচাই করুন':'') + '।':'আয়ের অঙ্ক দিন — হিসাব সঙ্গে সঙ্গে দেখা যাবে।';
+    }else if(pay<0){
+      msg.hidden=false;msg.innerHTML='<b>অতিরিক্ত পরিশোধিত:</b> আপনার দেয় করের চেয়ে '+tk(-pay)+' বেশি কাটা/জমা হয়েছে — রিটার্নে ফেরত বা সমন্বয়ের দাবি করুন।';
+    }else if(pay===0){
+      msg.hidden=false;msg.textContent='দেয় কর পুরোটাই পরিশোধিত। রিটার্ন জমা দিয়ে প্রাপ্তিস্বীকার সংগ্রহ করুন।';
+    }else{msg.hidden=true;}
+
+    setMoney('r-exempt',o.exempt);
+    setMoney('r-taxable',o.taxable);
+    setMoney('r-threshold',o.threshold);
+    setMoney('r-gross',o.gross);
+    setMoney('r-rebate',o.rebate);
+    document.getElementById('r-rebate-note').textContent=o.overThreshold?('সর্বনিম্ন: আয়ের ৩% = '+tk(RULES.rebate.pctIncome*o.taxable)+' · বিনিয়োগের ১০% = '+tk(RULES.rebate.pctInvest*inp.invest)+' · সীমা ৳৭,৫০,০০০'):'Investment rebate';
+    var minEl=document.getElementById('r-min');minEl.dataset.value=o.minApplied?Math.round(o.minTax):0;
+    minEl.textContent=o.minApplied?tk(o.minTax):(o.overThreshold?'প্রযোজ্য নয়':'—');
+    document.getElementById('r-min-note').textContent=o.overThreshold?((inp.first?'নতুন করদাতা: ন্যূনতম ৳১,০০০':'ন্যূনতম ৳৫,০০০')+(o.minApplied?' — রিবেটের পর কর কম হওয়ায় ন্যূনতম কর ধরা হলো':' — রিবেটের পর কর এর বেশি, তাই প্রযোজ্য নয়')):'করমুক্ত সীমার নিচে — প্রযোজ্য নয়';
+    setMoney('r-net',o.net);
+    setMoney('r-surcharge',o.sur);
+    document.getElementById('r-sur-note').textContent=o.filing?('নিট করের '+pct(o.filing.pct)+' বা ন্যূনতম '+tk(o.filing.floor)+' — যেটি বেশি'):'অক্টোবর–ডিসেম্বর: কোনো অতিরিক্ত নেই';
+    setMoney('r-total',o.total);
+    setMoney('r-paid',inp.paid);
+    setMoney('r-paynow2',o.payNow);
+
+    var tb=document.getElementById('slabBody');var h='';
+    h+='<tr><td>করমুক্ত সীমা পর্যন্ত ('+tk(o.threshold)+') — ০%</td><td>'+tk(Math.min(o.taxable,o.threshold))+'</td><td>৳০</td></tr>';
+    for(var i=0;i<o.rows.length;i++){var r=o.rows[i];h+='<tr class="'+(r.amt>0?'':'zero')+'"><td>'+SLAB_LABELS[i]+' — '+pct(r.rate)+'</td><td>'+tk(r.amt)+'</td><td>'+tk(r.tax)+'</td></tr>';}
+    h+='<tr><td><b>মোট স্ল্যাব কর</b></td><td><b>'+tk(o.above)+'</b></td><td><b>'+tk(o.gross)+'</b></td></tr>';
+    tb.innerHTML=h;
+  }
+
+  var form=document.getElementById('taxForm');
+  form.addEventListener('input',render);form.addEventListener('change',render);
+  form.addEventListener('submit',function(e){e.preventDefault();render();});
+
+  // Hide monetization links whose href is still a {{PLACEHOLDER}}
+  document.querySelectorAll('a[data-placeholder]').forEach(function(a){var h=a.getAttribute('href')||'';if(h.indexOf('{{')===0){a.hidden=true;if(a.id==='waBtn'){document.getElementById('helpCard').hidden=true;}}});
+  var tools=document.querySelectorAll('.tools a:not([hidden])');if(!tools.length){var tc=document.querySelector('.tools');if(tc)tc.closest('section').hidden=true;}
+
+  // Theme toggle (per-viewer convenience)
+  var root=document.documentElement,btn=document.getElementById('themeBtn');
+  try{var saved=localStorage.getItem('taxhishab-theme');if(saved)root.setAttribute('data-theme',saved);}catch(e){}
+  btn.addEventListener('click',function(){var cur=root.getAttribute('data-theme');var dark=cur?cur==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;var next=dark?'light':'dark';root.setAttribute('data-theme',next);try{localStorage.setItem('taxhishab-theme',next);}catch(e){}});
+
+  window.__taxCompute=compute;
+  render();
+})();
+</script>
+</body>
+</html>
